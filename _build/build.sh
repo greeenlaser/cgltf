@@ -68,7 +68,8 @@ mf --f "${INCLUDE_ORIGIN}/cgltf.h" --t "${INCLUDE_TARGET}/cgltf.h"
 # Compile
 #
 
-kalamake ${BUILD_RELEASE} && kalamake ${BUILD_DEBUG}
+kalamake ${BUILD_RELEASE} || exit 1
+kalamake ${BUILD_DEBUG} || exit 1
 
 #
 # Cleanup
