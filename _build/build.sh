@@ -44,7 +44,7 @@ case "$1" in
 esac
 
 #
-# Copy sources, headers and license
+# Copy dependencies
 #
 
 if [ -d "${SRC_TARGET}" ]; then
@@ -56,8 +56,6 @@ if [ -d "${INCLUDE_TARGET}" ]; then
     rm -rf "${INCLUDE_TARGET}"
 fi
 mkdir "${INCLUDE_TARGET}"
-
-# Sources and headers
 
 cat > src/cgltf.c <<'EOF'
 #define CGLTF_IMPLEMENTATION
