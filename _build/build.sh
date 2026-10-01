@@ -10,9 +10,6 @@ set -e
 
 KMAKE_ORIGIN=project.kmake
 
-LICENSE_ORIGIN=../LICENSE
-LICENSE_TARGET=LICENSE
-
 SRC_TARGET=src
 
 INCLUDE_ORIGIN=..
@@ -22,14 +19,23 @@ case "$1" in
     --linux)
         BUILD_RELEASE="--compile ${KMAKE_ORIGIN} release-linux"
         BUILD_DEBUG="--compile ${KMAKE_ORIGIN} debug-linux"
+
+        TARGET_REL_DIR=release-linux
+        TARGET_DEB_DIR=debug-linux
         ;;
     --windows-gnu)
         BUILD_RELEASE="--compile ${KMAKE_ORIGIN} release-windows-gnu"
         BUILD_DEBUG="--compile ${KMAKE_ORIGIN} debug-windows-gnu"
+
+        TARGET_REL_DIR=release-windows-gnu
+        TARGET_DEB_DIR=debug-windows-gnu
         ;;
     --windows)
         BUILD_RELEASE="--compile ${KMAKE_ORIGIN} release-windows"
         BUILD_DEBUG="--compile ${KMAKE_ORIGIN} debug-windows"
+
+        TARGET_REL_DIR=release-windows
+        TARGET_DEB_DIR=debug-windows
         ;;
     *)
         echo "Error: Argument must be --linux, --windows-gnu or --windows" >&2
@@ -51,16 +57,12 @@ if [ -d "${INCLUDE_TARGET}" ]; then
 fi
 mkdir "${INCLUDE_TARGET}"
 
-mf --o --f "${LICENSE_ORIGIN}" --t "${LICENSE_TARGET}"
-
-# Source files
+# Sources and headers
 
 cat > src/cgltf.c <<'EOF'
 #define CGLTF_IMPLEMENTATION
 #include "cgltf.h"
 EOF
-
-# Headers
 
 mf --f "${INCLUDE_ORIGIN}/cgltf.h" --t "${INCLUDE_TARGET}/cgltf.h"
 
@@ -75,8 +77,20 @@ kalamake ${BUILD_DEBUG} || exit 1
 # Cleanup
 #
 
-# Only delete src but keep include because its needed by the libraries
 rm -rf "${SRC_TARGET}"
 
-rm -rf "release/obj"
-rm -rf "debug/obj"
+if [ -d "${TARGET_REL_DIR}/obj" ]; then
+    rm -rf "${TARGET_REL_DIR}/obj"
+fi
+
+if [ -d "${TARGET_DEB_DIR}/obj" ]; then
+    rm -rf "${TARGET_DEB_DIR}/obj"
+fi
+
+mf --o --f "${INCLUDE_TARGET}" --t "${TARGET_REL_DIR}"
+mf --o --f "${INCLUDE_TARGET}" --t "${TARGET_DEB_DIR}"
+
+mf --o --f "../LICENSE" --t "${TARGET_REL_DIR}/LICENSE"
+mf --o --f "../LICENSE" --t "${TARGET_DEB_DIR}/LICENSE"
+
+rm -rf "${INCLUDE_TARGET}"
