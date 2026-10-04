@@ -2,15 +2,15 @@
 
 #references
 name_bin: cgltf
-dir_release: release-
-dir_debug: debug-
+dir_release: build/temp/release-
+dir_debug: build/temp/debug-
 
 #global
 compilerlauncher: ccache
 compiler: clang
 standard: c17
 binarytype: static
-sources: "src/cgltf.c"
+sources: "src/cgltf_impl.c"
 headers: "include"
 defines: MAKE_LIB
 warninglevel: normal

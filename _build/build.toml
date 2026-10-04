@@ -1,0 +1,38 @@
+[project]
+name="cgltf"
+version="1-15-0"
+kmake="project.kmake"
+
+[references]
+cgltf_impl="cgltf_impl.c"
+cgltf_header="cgltf.h"
+
+[windows-sync]
+cg_copy_impl=[ "${cgltf_impl}", "src/${cgltf_impl}", "copy" ]
+cg_copy_header=[ "../${cgltf_header}", "include/${cgltf_header}", "copy" ]
+
+[windows-post-build-sync]
+cg_bin_rel=[ "build/temp/release-windows/cgltf.lib", "build/${version}/cgltf.lib", "copy" ]
+cg_bin_deb=[ "build/temp/debug-windows/cgltfd.lib", "build/${version}/cgltfd.lib", "copy" ]
+cg_include=[ "include", "build/${version}/include", "copy" ]
+cg_license=[ "../LICENSE", "build/${version}/LICENSE", "copy" ]
+
+[windows-gnu-sync]
+cg_copy_impl=[ "${cgltf_impl}", "src/${cgltf_impl}", "copy" ]
+cg_copy_header=[ "../${cgltf_header}", "include/${cgltf_header}", "copy" ]
+
+[windows-gnu-post-build-sync]
+cg_bin_rel=[ "build/temp/release-windows-gnu/cgltf-gnu.lib", "build/${version}/cgltf-gnu.lib", "copy" ]
+cg_bin_deb=[ "build/temp/debug-windows-gnu/cgltf-gnud.lib", "build/${version}/cgltf-gnud.lib", "copy" ]
+cg_include=[ "include", "build/${version}/include", "copy" ]
+cg_license=[ "../LICENSE", "build/${version}/LICENSE", "copy" ]
+
+[linux-sync]
+cg_copy_impl=[ "${cgltf_impl}", "src/${cgltf_impl}", "copy" ]
+cg_copy_header=[ "../${cgltf_header}", "include/${cgltf_header}", "copy" ]
+
+[linux-post-build-sync]
+cg_bin_rel=[ "build/temp/release-linux/libcgltf.a", "build/${version}/libcgltf.a", "copy" ]
+cg_bin_deb=[ "build/temp/debug-linux/libcgltfd.a", "build/${version}/libcgltfd.a", "copy" ]
+cg_include=[ "include", "build/${version}/include", "copy" ]
+cg_license=[ "../LICENSE", "build/${version}/LICENSE", "copy" ]
